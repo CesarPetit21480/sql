@@ -56,10 +56,8 @@ CREATE TABLE IF NOT EXISTS workshop_CesarPetit.profesor
 	id_profesor int auto_increment primary key,
     nombre varchar(50) not null,
     apellido varchar(50) not null,
-    email varchar(100) not null,
-    id_tipoclase int not null,
-    horas_diarias time,
-    constraint fk_tipoClaseProfesor FOREIGN KEY(id_tipoclase) REFERENCES tipo_clase(id_tipoClase) ON DELETE RESTRICT ON UPDATE CASCADE
+    email varchar(100) not null,   
+    horas_diarias time   
 );
 
 CREATE TABLE IF NOT EXISTS workshop_CesarPetit.profesor_tipoClase
