@@ -1,0 +1,51 @@
+id_tipoClase,nombre,descripcion,id_ejercicio
+1,Foxtrot Charlie Hotel Echo Yankee India Tango Quebec Victor Bravo Oscar Juliett X-ray Uniform,turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin,1
+2,Charlie November Victor Whiskey Oscar Papa Hotel India Bravo Alfa Yankee Golf Zulu Delta,diam id ornare imperdiet sapien urna pretium nisl ut volutpat sapien arcu sed augue,2
+3,Papa Foxtrot Echo Yankee India Sierra Lima Victor X-ray Romeo Kilo Delta Charlie Alfa Uniform,ante vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae duis faucibus accumsan odio curabitur,3
+4,Lima Echo Bravo November Foxtrot Oscar Whiskey Tango Hotel Papa Alfa,vestibulum aliquet ultrices erat tortor sollicitudin mi sit amet lobortis sapien sapien non,4
+5,Echo Alfa Lima Yankee X-ray Kilo Hotel Papa November Zulu Uniform Oscar Juliett Bravo Delta Whiskey India Tango Sierra,nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum integer a nibh in quis,5
+6,Uniform Echo Romeo Juliett Whiskey Kilo Bravo Hotel Papa Mike Oscar Yankee,eu felis fusce posuere felis sed lacus morbi sem mauris laoreet ut rhoncus aliquet pulvinar sed nisl nunc rhoncus dui,6
+7,Oscar Kilo Juliett X-ray Yankee Romeo November Tango Whiskey Bravo Delta Hotel,leo pellentesque ultrices mattis odio donec vitae nisi nam ultrices libero non mattis pulvinar nulla pede ullamcorper,7
+8,Juliett November Tango Kilo Bravo Papa Sierra Mike Uniform India Romeo Oscar Whiskey Zulu Alfa Golf Hotel Foxtrot X-ray Echo,primis in faucibus orci luctus et ultrices posuere cubilia curae nulla dapibus dolor vel est donec odio,8
+9,Delta Lima Uniform Charlie Mike Kilo Foxtrot Alfa Sierra Yankee November Whiskey Golf Victor India Romeo Bravo Tango,id mauris vulputate elementum nullam varius nulla facilisi cras non velit nec nisi vulputate nonummy maecenas tincidunt lacus at velit,9
+10,Zulu Echo Uniform Juliett Oscar Delta Kilo X-ray Mike India Papa Hotel Victor Yankee,tortor risus dapibus augue vel accumsan tellus nisi eu orci mauris lacinia sapien quis libero nullam sit,10
+11,Oscar Bravo Golf Sierra November Quebec Uniform Mike Kilo Alfa,vulputate vitae nisl aenean lectus pellentesque eget nunc donec quis orci eget orci vehicula condimentum curabitur in libero,11
+12,Quebec Victor Oscar Juliett Kilo X-ray Alfa Zulu Foxtrot Delta Charlie Uniform Echo Golf Lima Tango Papa Hotel Romeo,nulla nunc purus phasellus in felis donec semper sapien a libero nam dui,12
+13,Foxtrot Romeo Yankee Alfa Lima Juliett Oscar Victor India Uniform Golf Charlie Tango,ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae duis faucibus accumsan odio,13
+14,Delta Romeo Sierra Juliett India Lima Victor Charlie Alfa November Whiskey Quebec Kilo,sit amet justo morbi ut odio cras mi pede malesuada in imperdiet et commodo,14
+15,X-ray Foxtrot Romeo Delta Uniform Mike Yankee Oscar Tango Alfa Bravo India Lima Papa Zulu November,nisi venenatis tristique fusce congue diam id ornare imperdiet sapien urna pretium nisl ut volutpat sapien arcu,15
+16,Alfa Delta Victor Yankee Zulu Lima Uniform Bravo Whiskey Charlie Hotel India Sierra Foxtrot,tristique fusce congue diam id ornare imperdiet sapien urna pretium nisl ut volutpat,16
+17,Yankee Oscar Victor India Uniform Romeo Alfa X-ray Golf Sierra Echo Foxtrot November Hotel Quebec Tango,velit nec nisi vulputate nonummy maecenas tincidunt lacus at velit vivamus vel nulla,17
+18,Oscar Sierra Zulu Quebec Hotel Echo Alfa Juliett Uniform Papa India Bravo Delta Tango X-ray,congue vivamus metus arcu adipiscing molestie hendrerit at vulputate vitae nisl aenean lectus pellentesque eget nunc donec quis,18
+19,Hotel Mike India Alfa Romeo Victor November Lima Bravo Echo Tango,luctus cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus vivamus vestibulum sagittis sapien cum sociis,19
+20,Oscar Hotel Juliett Yankee Mike Alfa November Golf Zulu Charlie Sierra X-ray Echo Whiskey Foxtrot Victor Papa Bravo Romeo Kilo,mollis molestie lorem quisque ut erat curabitur gravida nisi at nibh,20
+21,Hotel Yankee Juliett Lima Golf Echo Charlie Oscar Romeo Tango,nisi vulputate nonummy maecenas tincidunt lacus at velit vivamus vel nulla eget eros elementum,21
+22,Hotel Romeo Golf Juliett Bravo Papa India November Victor Kilo,tortor risus dapibus augue vel accumsan tellus nisi eu orci mauris lacinia sapien quis libero nullam sit amet,22
+23,Juliett Sierra Mike Charlie November Oscar Bravo Hotel Lima Foxtrot Quebec Yankee Romeo Tango Papa Golf Uniform,nulla ut erat id mauris vulputate elementum nullam varius nulla facilisi cras non,23
+24,Charlie Golf Tango Foxtrot India Zulu Papa Kilo Sierra Quebec,in ante vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae duis faucibus accumsan,24
+25,Victor Mike Charlie November Hotel Juliett Foxtrot Oscar Kilo Lima Uniform Quebec,sit amet eros suspendisse accumsan tortor quis turpis sed ante vivamus tortor duis mattis egestas metus,25
+26,Yankee Charlie Victor Bravo X-ray Sierra Delta Golf Alfa Hotel Whiskey Echo Foxtrot Papa India November Quebec Juliett Kilo,elit proin risus praesent lectus vestibulum quam sapien varius ut blandit non interdum in ante vestibulum ante,26
+27,India Hotel November Zulu Romeo Uniform Tango Mike Delta Victor X-ray Lima,nulla tellus in sagittis dui vel nisl duis ac nibh fusce lacus purus aliquet at feugiat,27
+28,Mike Zulu Tango Victor November Alfa Charlie Delta Sierra Papa,justo morbi ut odio cras mi pede malesuada in imperdiet et commodo vulputate justo in,28
+29,Delta Charlie Echo Sierra Oscar Zulu X-ray Yankee Whiskey Juliett Mike Hotel,mus vivamus vestibulum sagittis sapien cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel,29
+30,Victor Tango X-ray Yankee Whiskey Golf Foxtrot November Alfa Lima Bravo Quebec India Mike Uniform Juliett Oscar Papa Kilo Romeo,ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae duis faucibus,30
+31,November Papa Zulu Tango Alfa Foxtrot Kilo India Echo Golf Victor Juliett Mike Quebec,enim in tempor turpis nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis,31
+32,Sierra Juliett Golf Echo India Charlie Uniform Bravo Alfa Victor Quebec,habitasse platea dictumst aliquam augue quam sollicitudin vitae consectetuer eget rutrum at lorem integer tincidunt ante vel,32
+33,Echo Tango Foxtrot Papa Victor Delta November Bravo Hotel Kilo Oscar Juliett Quebec Charlie Uniform India Lima Mike,id sapien in sapien iaculis congue vivamus metus arcu adipiscing molestie,33
+34,Golf Bravo Yankee Oscar Delta Romeo Charlie Alfa Victor Uniform Zulu Papa India Tango,interdum mauris ullamcorper purus sit amet nulla quisque arcu libero,34
+35,Yankee Charlie Bravo Juliett Uniform Foxtrot Papa Mike Hotel Alfa Delta Lima X-ray Sierra,a nibh in quis justo maecenas rhoncus aliquam lacus morbi quis tortor id nulla ultrices aliquet maecenas leo odio condimentum,35
+36,Victor Sierra Zulu Mike Quebec Echo Hotel Lima Golf Papa Foxtrot Oscar Charlie,suspendisse potenti in eleifend quam a odio in hac habitasse,36
+37,Oscar Whiskey Foxtrot Uniform Quebec Zulu Bravo Yankee India Hotel,nulla nunc purus phasellus in felis donec semper sapien a libero nam dui proin leo odio porttitor id consequat,37
+38,Uniform Oscar India Papa Whiskey Quebec Echo Romeo Charlie Sierra Mike Foxtrot Hotel Alfa X-ray November Bravo,nulla tempus vivamus in felis eu sapien cursus vestibulum proin,38
+39,Hotel Romeo Lima Whiskey Kilo Bravo Victor X-ray November Papa Golf Delta Foxtrot Alfa Mike Sierra,orci vehicula condimentum curabitur in libero ut massa volutpat convallis morbi odio odio,39
+40,Papa X-ray Echo Zulu Romeo Bravo Delta Golf Hotel Alfa Oscar Juliett Victor Yankee Tango Foxtrot India Charlie Kilo Sierra,duis at velit eu est congue elementum in hac habitasse platea dictumst morbi vestibulum velit id pretium,40
+41,Papa Victor Lima Juliett Foxtrot Yankee Alfa Hotel Golf Kilo,faucibus orci luctus et ultrices posuere cubilia curae donec pharetra magna vestibulum,41
+42,X-ray Hotel Echo Juliett Zulu Yankee Alfa Sierra Whiskey November Uniform,pretium iaculis diam erat fermentum justo nec condimentum neque sapien placerat,42
+43,Whiskey Victor X-ray Hotel Mike Delta Zulu Juliett Papa India Oscar Charlie Lima Alfa Golf,hac habitasse platea dictumst etiam faucibus cursus urna ut tellus nulla ut,43
+44,X-ray Bravo Golf Juliett Kilo Echo Victor Hotel Romeo Yankee Mike Whiskey India,convallis tortor risus dapibus augue vel accumsan tellus nisi eu orci mauris lacinia sapien quis,44
+45,Romeo Oscar Delta Juliett Victor Quebec Foxtrot Uniform November Yankee Zulu Lima Sierra Bravo X-ray,quam sapien varius ut blandit non interdum in ante vestibulum,45
+46,Tango November Victor Mike Echo Golf India Foxtrot Yankee Bravo Oscar Romeo Uniform,ac est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet sapien urna pretium nisl,46
+47,India Oscar November Echo Charlie X-ray Kilo Foxtrot Tango Lima,eget vulputate ut ultrices vel augue vestibulum ante ipsum primis in faucibus orci luctus,47
+48,Alfa Whiskey Oscar Quebec Echo Bravo India Tango Uniform Papa Sierra Golf Zulu Lima Kilo Yankee Foxtrot X-ray,ac enim in tempor turpis nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh,48
+49,Lima Sierra Oscar Mike Uniform Victor Tango Delta Yankee India Kilo Echo Romeo Bravo Papa X-ray Zulu November Hotel,in faucibus orci luctus et ultrices posuere cubilia curae duis,49
+50,Lima Kilo Juliett Delta Echo Zulu Sierra Alfa Quebec Uniform Romeo Charlie Hotel India Oscar November Tango,nisi nam ultrices libero non mattis pulvinar nulla pede ullamcorper augue a suscipit nulla elit ac nulla,50
