@@ -1,0 +1,20 @@
+﻿id_ejercicio,nombre,descripcion,id_tipoClase
+1,Burpees,Ejercicio de cuerpo completo en el que te agachas - haces una flexion de brazos - saltas con las manos sobre la cabeza y luego vuelves a la posicion inicial.,1
+2,Wall Balls,Consiste en lanzar una pelota medicinal contra una pared a una altura determinada- y atraparla al volver.,1
+3,Box Jumps,Saltar sobre una caja o plataforma y luego bajar con seguridad.,1
+4,Kettlebell Swing,Balanceo de una pesa rusa (kettlebell) entre las piernas y luego proyectandola hacia adelante con un movimiento explosivo.,1
+5,Plancha,Posicion en la que te apoyas sobre los antebrazos y los dedos de los pies - manteniendo el cuerpo recto y tenso durante un tiempo determinado.,2
+6,Mountain Climbers,Posicion de plancha alterna en la que llevas las rodillas al pecho- simulando la accion de correr.,2
+7,Russian Twist,Sentado con las piernas levantadas - giras el torso de un lado a otro mientras sostienes un peso o pelota medicinal.,2
+8,Box Jumps,Saltar sobre una caja o plataforma y luego bajar con seguridad.,2
+9,Sprint en bicicleta estacionaria, Pedaleo intenso y rapido durante un corto periodo de tiempo para simular un sprint en una bicicleta estatica.,3
+10,Climbing Hills,Ajustar la resistencia de la bicicleta para simular subir una colina empinada mientras pedaleas.,3
+11,Jumping Jacks,Salto lateral mientras pedaleas rapidamente en la bicicleta estatica.,4
+12,Sprints en la cinta,Correr a alta velocidad en una cinta de correr durante un breve periodo de tiempo.,6
+13,Plank to Push-Up,Comenzar en posicion de plancha y luego pasar a una posicion de flexion de brazos (push-up)- alternando los brazos.,6
+14,Thrusters,Combinacion de una sentadilla frontal con una elevacion de pesas sobre la cabeza.,1
+15,Assault Bike,Utilizacion de una bicicleta estatica con manivelas para realizar un pedaleo intenso y rapido.
+16,Saludo al Sol (Surya Namaskar), Es una secuencia fluida de movimientos que combina varias posturas - estiramientos y respiracion consciente. Se realiza en secuencias repetitivas- coordinando la respiracion con el movimiento. El Saludo al Sol ayuda a calentar el cuerpo mejorar la flexibilidad- fortalecer los musculos y aumentar la concentracion.,7
+17,Postura del Perro hacia Abajo (Adho Mukha Svanasana), Es una postura clasica del yoga que se realiza a cuatro patas- formando una V invertida con el cuerpo. Las manos estan separadas a la anchura de los hombros y los pies a la anchura de las caderas. La columna se estira- los talones intentan tocar el suelo y la cabeza se relaja entre los brazos. Esta postura ayuda a estirar y fortalecer los brazos- hombros, piernas y espalda- al tiempo que mejora la circulacion sanguinea y alivia el estres.,7
+18,Cien (The Hundred), Es uno de los ejercicios mas emblematicos del metodo Pilates. Comienzas acostado boca arriba con las piernas levantadas y estiradas en un angulo de 45 grados- los brazos a los lados y la cabeza y los hombros levantados del suelo. Desde esta posicion- bombeas los brazos hacia arriba y abajo mientras respiras en un patron ritmico. El objetivo es mantener la estabilidad del torso y fortalecer los musculos abdominales profundos- asi como mejorar la respiracion y la circulacion.,5
+19,Puente (Bridge), Este ejercicio se realiza acostado boca arriba con las rodillas flexionadas y los pies apoyados en el suelo- separados a la anchura de las caderas. Desde esta posicion, levantas las caderas hacia arriba- formando una linea recta desde los hombros hasta las rodillas. Mantienes la posicion durante unos segundos y luego bajas lentamente las caderas de nuevo al suelo. El puente fortalece los musculos de gluteos- abdominales y espalda baja, mientras mejora la estabilidad de la pelvis y la movilidad de la columna vertebral.,5

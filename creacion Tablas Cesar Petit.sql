@@ -23,22 +23,24 @@ email varchar(70) not null,
 index nomSuc(nombre)
 );
 
+CREATE TABLE IF NOT EXISTS workshop_CesarPetit.tipo_clase
+(
+	id_tipoClase int auto_increment primary key,
+    nombre varchar(50) not null,
+    descripcion mediumtext null
+);
+
+
 CREATE TABLE IF NOT EXISTS workshop_CesarPetit.ejercicios
 (
 	id_ejercicio int auto_increment primary key,
     nombre varchar(50) not null,
     descripcion mediumtext null,
-    index nomEjercicio (nombre)
+    id_tipoClase int not null,
+    index nomEjercicio (nombre),    
+	constraint fk_tipoClaseEjercicio FOREIGN KEY (id_tipoClase) REFERENCES tipo_clase(id_tipoClase) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS workshop_CesarPetit.tipo_clase
-(
-	id_tipoClase int auto_increment primary key,
-    nombre varchar(50) not null,
-    descripcion mediumtext null,
-    id_ejercicio int not null,
-    constraint fk_ej FOREIGN KEY (id_ejercicio) REFERENCES ejercicios(id_ejercicio) ON DELETE RESTRICT ON UPDATE CASCADE
-);
 
 CREATE TABLE IF NOT EXISTS workshop_CesarPetit.horario(
 
@@ -48,7 +50,7 @@ CREATE TABLE IF NOT EXISTS workshop_CesarPetit.horario(
     id_tipoclase int not null,
     cupos int not null,
 	constraint fk_sucursal FOREIGN KEY (id_sucursal) REFERENCES sucursal(id_sucursal) ON DELETE RESTRICT ON UPDATE CASCADE,
-	constraint fk_tipoClase FOREIGN KEY (id_tipoclase) REFERENCES tipo_clase(id_tipoClase) ON DELETE RESTRICT ON UPDATE CASCADE
+	constraint fk_tipoClase FOREIGN KEY (id_tipoclase) REFERENCES tipo_clase(id_tipoClase) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS workshop_CesarPetit.profesor
@@ -66,7 +68,7 @@ CREATE TABLE IF NOT EXISTS workshop_CesarPetit.profesor_tipoClase
     id_tipoClase int not null,
     id_profesor int not null,
     constraint fk_tipoclaseRelacion foreign key(id_tipoClase) references tipo_clase(id_tipoClase) ON DELETE RESTRICT ON UPDATE CASCADE,
-    constraint fk_Profesor foreign key(id_profesor) references profesor(id_profesor) ON DELETE RESTRICT ON UPDATE CASCADE
+    constraint fk_Profesor foreign key(id_profesor) references profesor(id_profesor) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS workshop_CesarPetit.profesor_sucursal
@@ -74,8 +76,8 @@ CREATE TABLE IF NOT EXISTS workshop_CesarPetit.profesor_sucursal
 	id int auto_increment primary key,
     id_sucursal int not null,
     id_profesor int not null,
-    constraint fk_sucursalProfesor foreign key(id_sucursal) references sucursal(id_sucursal) ON DELETE RESTRICT ON UPDATE CASCADE,
-    constraint fk_ProfesorRelacion foreign key(id_profesor) references profesor(id_profesor) ON DELETE RESTRICT ON UPDATE CASCADE
+    constraint fk_sucursalProfesor foreign key(id_sucursal) references sucursal(id_sucursal) ON DELETE CASCADE ON UPDATE CASCADE,
+    constraint fk_ProfesorRelacion foreign key(id_profesor) references profesor(id_profesor) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS workshop_CesarPetit.profesor_horario
@@ -83,8 +85,8 @@ CREATE TABLE IF NOT EXISTS workshop_CesarPetit.profesor_horario
 	id int auto_increment primary key,
     id_horario int not null,
     id_profesor int not null,
-    constraint fk_horarioProfesor foreign key(id_horario) references horario(id_horario) ON DELETE RESTRICT ON UPDATE CASCADE,
-    constraint fk_ProfesorHorario foreign key(id_profesor) references profesor(id_profesor) ON DELETE RESTRICT ON UPDATE CASCADE
+    constraint fk_horarioProfesor foreign key(id_horario) references horario(id_horario) ON DELETE CASCADE ON UPDATE CASCADE,
+    constraint fk_ProfesorHorario foreign key(id_profesor) references profesor(id_profesor) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS workshop_CesarPetit.clase
@@ -96,17 +98,17 @@ CREATE TABLE IF NOT EXISTS workshop_CesarPetit.clase
     id_tipoClase int not null,
     id_profesor int not null,
     id_sucursal int not null,
-    constraint fk_horarioClase foreign key(id_horario) references horario(id_horario) ON DELETE RESTRICT ON UPDATE CASCADE,
-	constraint fk_clienteClase foreign key(id_cliente) references cliente(id_cliente) ON DELETE RESTRICT ON UPDATE CASCADE,
-    constraint fk_tipoDeClase foreign key(id_tipoClase) references tipo_clase(id_tipoClase) ON DELETE RESTRICT ON UPDATE CASCADE,    
-	constraint fk_profesorClase foreign key(id_profesor) references profesor(id_profesor) ON DELETE RESTRICT ON UPDATE CASCADE,
-    constraint fk_sucursalClase foreign key(id_sucursal) references sucursal(id_sucursal) ON DELETE RESTRICT ON UPDATE CASCADE
+    constraint fk_horarioClase foreign key(id_horario) references horario(id_horario) ON DELETE CASCADE ON UPDATE CASCADE,
+	constraint fk_clienteClase foreign key(id_cliente) references cliente(id_cliente) ON DELETE CASCADE ON UPDATE CASCADE,
+    constraint fk_tipoDeClase foreign key(id_tipoClase) references tipo_clase(id_tipoClase) ON DELETE CASCADE ON UPDATE CASCADE,    
+	constraint fk_profesorClase foreign key(id_profesor) references profesor(id_profesor) ON DELETE CASCADE ON UPDATE CASCADE,
+    constraint fk_sucursalClase foreign key(id_sucursal) references sucursal(id_sucursal) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS workshop_CesarPetit.usuario
 (
 	id_usuario int auto_increment primary key,
-    user varchar(8) not null,
+    user varchar(20) not null,
     password varchar(100) not null,
     email varchar(60) not null   
 );
@@ -116,7 +118,7 @@ CREATE TABLE IF NOT EXISTS workshop_CesarPetit.usuario_sucursal
 	id int auto_increment primary key,
 	id_usuario int,
 	id_sucursal int not null,  
-    constraint fk_usuarioSucursal foreign key(id_sucursal) references sucursal(id_sucursal) ON DELETE RESTRICT ON UPDATE CASCADE,  
-	constraint fk_user foreign key(id_usuario) references usuario(id_usuario) ON DELETE RESTRICT ON UPDATE CASCADE  
+    constraint fk_usuarioSucursal foreign key(id_sucursal) references sucursal(id_sucursal) ON DELETE CASCADE ON UPDATE CASCADE,  
+	constraint fk_user foreign key(id_usuario) references usuario(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE  
 );
 
