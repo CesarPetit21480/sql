@@ -2,7 +2,7 @@ CREATE DATABASE workshop_CesarPetit;
 
 USE workshop_CesarPetit;
 
-CREATE TABLE IF NOT EXISTS workshop_CesarPetit.Cliente(
+CREATE TABLE IF NOT EXISTS workshop_CesarPetit.cliente(
 id_cliente int auto_increment,
 nombre varchar(50)  not null,
 apellido varchar(50) not null,
