@@ -122,3 +122,19 @@ CREATE TABLE IF NOT EXISTS workshop_CesarPetit.usuario_sucursal
 	constraint fk_user foreign key(id_usuario) references usuario(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE  
 );
 
+CREATE TABLE workshop_CesarPetit.log_bajaCLiente (
+	id int auto_increment primary key,
+	id_cliente int,
+    fechaBaja DATETIME
+);
+
+CREATE TABLE workshop_CesarPetit.log_bajaClase ( 
+	id int auto_increment primary key,
+	id_clase int,
+    id_horario int,
+    id_cliente int,
+    fecha_clase date,
+    id_tipoClase int,
+    id_profesor int,
+    id_sucursal int 
+ )
