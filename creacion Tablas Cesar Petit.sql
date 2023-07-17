@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS workshop_CesarPetit.tipo_clase
 CREATE TABLE IF NOT EXISTS workshop_CesarPetit.ejercicios
 (
 	id_ejercicio int auto_increment primary key,
-    nombre varchar(50) not null,
+    nombre varchar(100) not null,
     descripcion mediumtext null,
     id_tipoClase int not null,
     index nomEjercicio (nombre),    
