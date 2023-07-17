@@ -4,7 +4,7 @@ USE workshop_CesarPetit;
 
 CREATE TABLE IF NOT EXISTS workshop_CesarPetit.cliente(
 id_cliente int auto_increment,
-nombre varchar(50)  not null,
+nombre varchar(100)  not null,
 apellido varchar(50) not null,
 fecha_nacimiento date not null,
 fecha_alta date not null,
@@ -17,8 +17,8 @@ INDEX nombre (nombre,apellido)
 CREATE TABLE IF NOT EXISTS 	workshop_CesarPetit.sucursal
 (
 id_sucursal int auto_increment primary key,
-nombre varchar(50) not null,
-direccion varchar(50) not null,
+nombre varchar(100) not null,
+direccion varchar(100) not null,
 email varchar(70) not null,
 index nomSuc(nombre)
 );
@@ -26,7 +26,7 @@ index nomSuc(nombre)
 CREATE TABLE IF NOT EXISTS workshop_CesarPetit.tipo_clase
 (
 	id_tipoClase int auto_increment primary key,
-    nombre varchar(50) not null,
+    nombre varchar(100) not null,
     descripcion mediumtext null
 );
 

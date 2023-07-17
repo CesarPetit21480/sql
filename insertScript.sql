@@ -1,7 +1,6 @@
 delimiter $$
 use workshop_CesarPetit $$
 
-
 insert into cliente()
 values
 (null,'CESAR','PETIT','1980-04-21','2020-01-01','cesar_petit@hotmail.com',0),
@@ -90,6 +89,130 @@ VALUES
 (null,'18:00',3,1,20),
 (null,'19:00',15,2,20);
 
+INSERT INTO profesor
+VALUES
+(null, 'Juan', 'Perez','juan.perez@example.com', '08:00:00'),
+(null, 'Maria', 'Gomez','maria.gomez@example.com', '06:30:00'),
+(null, 'Carlos', 'Rodriguez','carlos.rodriguez@example.com', '07:45:00'),
+(null, 'Ana', 'Lopez','ana.lopez@example.com', '05:15:00'),
+(null, 'David', 'Martinez','david.martinez@example.com', '06:00:00'),
+(null, 'Laura', 'Fernandez','laura.fernandez@example.com', '07:30:00'),
+(null, 'Pablo', 'Gonzalez','pablo.gonzalez@example.com', '06:45:00'),
+(null, 'Sofia', 'Sanchez','sofia.sanchez@example.com', '05:45:00'),
+(null, 'Diego', 'Torres','diego.torres@example.com', '07:15:00'),
+(null, 'Andrea','Ruiz','andrea.ruiz@example.com', '06:15:00'),
+(null, 'Martin', 'Diaz','martin.diaz@example.com', '07:00:00'),
+(null, 'Valentina', 'Pereira','valentina.pereira@example.com', '06:30:00'),
+(null, 'Alejandro', 'Fernandez','alejandro.fernandez@example.com', '07:45:00'),
+(null, 'Camila', 'Lopez','camila.lopez@example.com', '05:30:00'),
+(null, 'Lucas', 'Garcia','lucas.garcia@example.com','06:45:00');
 
 
 
+
+INSERT INTO profesor_tipoclase()
+VALUES
+(1,1,1),
+(2,2,1),
+(3,3,2),
+(4,4,3),
+(5,4,4),
+(6,1,2),
+(7,2,2),
+(8,4,5),
+(9,1,6),
+(10,7,8),
+(11,6,10),
+(12,3,2),
+(13,4,2),
+(14,5,11),
+(15,6,15);
+
+
+INSERT INTO profesor_sucursal()
+VALUES
+(1,1,1),
+(2,1,2),
+(3,2,3),
+(4,2,4),
+(5,3,5),
+(8,6,8),
+(9,7,8),
+(10,7,9),
+(11,9,10),
+(12,9,11),
+(13,12,14),
+(14,12,15),
+(15,13,12);
+
+
+INSERT INTO profesor_horario()
+VALUES
+(1,1,1),
+(2,1,2),
+(3,2,3),
+(4,3,3),
+(5,6,1),
+(6,7,2),
+(7,8,3),
+(8,9,1),
+(9,10,10),
+(10,11,13),
+(11,12,5),
+(12,13,5),
+(13,14,6),
+(14,15,7),
+(15,13,9);
+
+INSERT INTO clase()
+VALUES
+(1,1,1,'2023-02-07',1,1,1),
+(2,1,2,'2023-02-07',1,2,1),
+(3,1,3,'2023-02-07',1,6,2),
+(4,2,4,'2023-02-07',2,2,3),
+(5,2,5,'2023-02-07',2,1,1),
+(6,3,6,'2023-02-07',3,2,3),
+(7,1,1,'2023-02-08',1,1,1),
+(8,1,2,'2023-02-08',1,2,1),
+(9,1,3,'2023-02-08',1,6,2),
+(10,2,4,'2023-02-08',2,2,3),
+(11,2,5,'2023-02-08',2,1,1),
+(12,3,6,'2023-02-08',3,2,3);
+
+
+INSERT INTO usuario
+VALUES
+(null,'johndoe','123456','john.doe@example.com'),
+(null,'sarahsmith','password123','sarah.smith@example.com'),
+(null,'mikebrown','abcdef','mike.brown@example.com'),
+(null,'emilyjones','qwerty','emily.jones@example.com'),
+(null,'davidwilson','987654','david.wilson@example.com'),
+(null,'lisawilliams','p@ssw0rd','lisa.williams@example.com'),
+(null,'jasonlee','777','jason.lee@example.com'),
+(null,'amycarter','mypass123','amy.carter@example.com'),
+(null,'robertsmith','abcd1234','robert.smith@example.com'),
+(null,'Jennifergreen','green123','jennifer.green@example.com'),
+(null,'williamjones','123abc','william.jones@example.com'),
+(null,'karenmiller','miller456','karen.miller@example.com'),
+(null,'chrisharris','passw0rd','chris.harris@example.com'),
+(null,'sandrabrown','brownsand','sandra.brown@example.com'),
+(null,'paulrobinson','robinsonpaul','paul.robinson@example.com');
+
+
+INSERT INTO usuario_sucursal()
+VALUES
+(1,1,1),
+(2,2,2),
+(3,3,3),
+(4,4,4),
+(5,5,5),
+(6,6,6),
+(7,1,2),
+(8,2,3),
+(9,3,9),
+(10,3,10),
+(11,4,15),
+(12,10,14),
+(13,9,13),
+(14,8,10),
+(15,1,15);
