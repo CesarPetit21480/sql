@@ -123,6 +123,17 @@ CREATE TABLE IF NOT EXISTS workshop_CesarPetit.usuario_sucursal
 );
 
 
+CREATE TABLE `precios_promocionales` (
+  id_promocional int NOT NULL AUTO_INCREMENT,
+  precio_diario decimal(10,2) DEFAULT NULL,
+  precio_semanal decimal(10,2) DEFAULT NULL,
+  precio_quincenal decimal(10,2) DEFAULT NULL,
+  precio_mensual decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`id_promocional`)
+);
+
+
+
 CREATE TABLE workshop_CesarPetit.log_bajaCLiente (
 	id int auto_increment primary key,
 	id_cliente int,
@@ -357,6 +368,10 @@ VALUES
 (13, 9, 13),
 (14, 8, 10),
 (15, 1, 15);
+
+
+insert into precios_promocionales()
+values(null,300,1300,4000,7000);
 
 
 
