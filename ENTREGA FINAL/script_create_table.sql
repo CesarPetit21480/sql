@@ -181,17 +181,22 @@ CREATE TABLE factura(
 
 -- TABLA 16 ITEM FACTURABLES 
 
-CREATE TABLE itemFacturables(
-	id INT auto_increment,
-    id_Usuario INT,
-    id_Factura INT,
-    id_tipoClase INT,
-    id_tipoPlan INT,
-    primary key (id),
-    CONSTRAINT fk_usuarioItemsFacturables FOREIGN KEY (id_Usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT fk_facturaItemsFacturables FOREIGN KEY (id_Factura) REFERENCES factura(id_factura) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT fk_tipoPlanitemsFacturables FOREIGN KEY (id_tipoPlan) REFERENCES planes_disponibles(id_plan) ON DELETE CASCADE ON UPDATE CASCADE  
-);
+CREATE TABLE `itemfacturables` (
+  `id_item` int NOT NULL AUTO_INCREMENT,
+  `id_Usuario` int DEFAULT NULL,
+  `id_Factura` int DEFAULT NULL,
+  `id_tipoClase` int DEFAULT NULL,
+  `id_tipoPlan` int DEFAULT NULL,
+  PRIMARY KEY (`id_item`),
+  KEY `fk_usuarioItemsFacturables` (`id_Usuario`),
+  KEY `fk_facturaItemsFacturables` (`id_Factura`),
+  KEY `fk_tipoPlanitemsFacturables` (`id_tipoPlan`),
+  KEY `fk_tipoClaseItemsFacturables_idx` (`id_tipoClase`),
+  CONSTRAINT `fk_facturaItemsFacturables` FOREIGN KEY (`id_Factura`) REFERENCES `factura` (`id_factura`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_tipoClaseItemsFacturables` FOREIGN KEY (`id_tipoClase`) REFERENCES `tipo_clase` (`id_tipoClase`),
+  CONSTRAINT `fk_tipoPlanitemsFacturables` FOREIGN KEY (`id_tipoPlan`) REFERENCES `planes_disponibles` (`id_plan`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_usuarioItemsFacturables` FOREIGN KEY (`id_Usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
+) ;
 
 -- TABLA 17 LOS BAJA CLIENTES
 
