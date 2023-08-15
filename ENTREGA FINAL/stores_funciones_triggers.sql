@@ -150,11 +150,10 @@ BEGIN
  
 END$$
 
-delimiter ;
 -- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   -- SP 2: SE CREA STORE PRODEDURE QUE INGRESA UN NUEVO PROFESOR
 -- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-delimiter $$
+
 
 CREATE PROCEDURE sp_agregar_profesor(in p_nombre varchar(50), p_apellido varchar(50), in p_email varchar(100), in p_horasDiarias time)
 BEGIN
@@ -169,10 +168,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_quitarProfesor`(in p_id int)
 BEGIN
 delete from profesor where id_profesor = p_id;
 END$$
-DELIMITER ;
 
-
-DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_transaccion`()
 BEGIN
 	declare registros int default 0;
@@ -188,9 +184,7 @@ COMMIT;
 -- ROLLBACK;
 
 END$$
-DELIMITER ;
 
-DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_cargarProfesor`(	in p_nombre varchar(50),
 										in p_apellido varchar(50),
                                         in p_email varchar(70),
@@ -202,6 +196,25 @@ values (null,p_nombre,p_apellido,p_email,p_horas);
 
 END$$
 DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ventaSubcripcion`(	in p_idUser int,
+										in p_id_tipoCalse int,
+                                        in p_id_tipoPlan int								
+                                        )
+BEGIN
+
+	IF p_idUser <= 0 OR p_id_tipoCalse <= 0 OR p_id_tipoPlan <= 0  THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'Todos los campos son requeridos';
+	ELSE
+		insert into  subcripcion_temporal(id_cliente,id_usuario,id_Plan)
+		VALUES(p_idCliente,p_idUser,p_id_tipoPlan);        
+	END IF;
+    
+END$$
+DELIMITER ;
+
 
 
 

@@ -147,7 +147,6 @@ CREATE TABLE IF NOT EXISTS workshop_CesarPetit.usuario_sucursal
 	constraint fk_user foreign key(id_usuario) references usuario(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE  
 );
 
-
 -- TABLA 13 PLANES DISPONIBLES EN LA CADENA
 
 CREATE TABLE `planes_disponibles` (
@@ -168,19 +167,19 @@ CREATE TABLE tipo_pago(
 );
 
 -- TABLA 15 TABLA FACTURAS
-CREATE TABLE factura(
-	
-	id_factura INT AUTO_INCREMENT,
-    id_cliente  INT,
-    total_factura DECIMAL(9,2) NOT NULL,
-    fecha_facturacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    id_tipoPago INT,
-    PRIMARY KEY (id_factura),
-	CONSTRAINT fk_tipo_pagoFactura FOREIGN KEY (id_tipoPago) REFERENCES tipo_pago(id_tipoPago) ON DELETE CASCADE ON UPDATE CASCADE
-);  
+CREATE TABLE `factura` (
+  `id_factura` int NOT NULL AUTO_INCREMENT,
+  `id_cliente` int DEFAULT NULL,
+  `total_factura` decimal(9,2) DEFAULT NULL,
+  `fecha_facturacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_tipoPago` int DEFAULT NULL,
+  `id_usuario` int DEFAULT NULL,
+  PRIMARY KEY (`id_factura`),
+  KEY `fk_tipo_pagoFactura` (`id_tipoPago`),
+  CONSTRAINT `fk_tipo_pagoFactura` FOREIGN KEY (`id_tipoPago`) REFERENCES `tipo_pago` (`id_tipoPago`) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 -- TABLA 16 ITEM FACTURABLES 
-
 CREATE TABLE `itemfacturables` (
   `id_item` int NOT NULL AUTO_INCREMENT,
   `id_Usuario` int DEFAULT NULL,
@@ -199,13 +198,11 @@ CREATE TABLE `itemfacturables` (
 ) ;
 
 -- TABLA 17 LOS BAJA CLIENTES
-
 CREATE TABLE workshop_CesarPetit.log_bajaCLiente (
 	id int auto_increment primary key,
 	id_cliente int,
     fechaBaja DATETIME
 );
-
 -- TABLA 18 LOG BAJA CLASE
 
 CREATE TABLE workshop_CesarPetit.log_bajaClase ( 
@@ -218,3 +215,15 @@ CREATE TABLE workshop_CesarPetit.log_bajaClase (
     id_profesor int,
     id_sucursal int 
  );
+ -- TABLA 19 para generar los item temporales de la factura
+ CREATE TABLE subcripcion_temporal(
+
+	id INT AUTO_INCREMENT NOT NULL,
+    id_usuario INT NOT NULL,
+    id_tipoClase INT NOT NULL,
+    id_Plan INT NOT NULL,
+    PRIMARY KEY (ID),
+    CONSTRAINT fk_isUserSubscripcion FOREIGN  KEY (id_usuario) REFERENCES usuario(id_usuario) ON UPDATE CASCADE,
+	CONSTRAINT fk_tipoClaseSubscripcion FOREIGN  KEY (id_tipoClase) REFERENCES tipo_clase(id_tipoClase) ON UPDATE CASCADE,
+	CONSTRAINT fk_planSubscripcion FOREIGN  KEY (id_Plan) REFERENCES planes_disponibles(id_plan) ON UPDATE CASCADE
+);
