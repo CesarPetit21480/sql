@@ -9,7 +9,7 @@
    -- VISTA 1:   ESTA VISTA PERMITE SABER QUE CANTIDAD DE CLASE TIENE EL PROFESOR CON ID = 1)
 -- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-use workshop_cesarpetit;
+use workshop_CesarPetit;
 CREATE VIEW vistaCantTipoClase AS (
 
   /* ESTA VISTA PERMITE SABER QUE CANTIDAD DE CLASE TIENE EL PROFESOR CON ID = 1)*/

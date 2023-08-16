@@ -217,7 +217,15 @@ VALUES
 
 
 INSERT INTO planes_disponibles()
-VALUES(null,300,1300,4000,7000);
+VALUES
+(null,"diario",300),
+(null,"semanal",1300),
+(null,"quincenal",4000),
+(null,"mensual",7000);
+
+
+
+
 
 INSERT INTO  tipo_pago()
 VALUES

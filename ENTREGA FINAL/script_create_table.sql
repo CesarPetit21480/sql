@@ -151,10 +151,8 @@ CREATE TABLE IF NOT EXISTS workshop_CesarPetit.usuario_sucursal
 
 CREATE TABLE `planes_disponibles` (
   `id_plan` int NOT NULL AUTO_INCREMENT,
-  `precio_diario` decimal(10,2) DEFAULT NULL,
-  `precio_semanal` decimal(10,2) DEFAULT NULL,
-  `precio_quincenal` decimal(10,2) DEFAULT NULL,
-  `precio_mensual` decimal(10,2) DEFAULT NULL,
+  `nombre` varchar(45) DEFAULT NULL,
+  `valor` decimal(9,2) DEFAULT NULL,
   PRIMARY KEY (`id_plan`)
 );
 
