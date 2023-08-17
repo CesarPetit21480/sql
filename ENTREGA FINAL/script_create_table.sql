@@ -168,10 +168,12 @@ CREATE TABLE tipo_pago(
 CREATE TABLE `factura` (
   `id_factura` int NOT NULL AUTO_INCREMENT,
   `id_cliente` int DEFAULT NULL,
+  `subtotal` decimal(11,2) DEFAULT NULL,
   `total_factura` decimal(9,2) DEFAULT NULL,
   `fecha_facturacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `id_tipoPago` int DEFAULT NULL,
   `id_usuario` int DEFAULT NULL,
+  `iva` decimal(11,2) DEFAULT NULL,
   PRIMARY KEY (`id_factura`),
   KEY `fk_tipo_pagoFactura` (`id_tipoPago`),
   CONSTRAINT `fk_tipo_pagoFactura` FOREIGN KEY (`id_tipoPago`) REFERENCES `tipo_pago` (`id_tipoPago`) ON DELETE CASCADE ON UPDATE CASCADE

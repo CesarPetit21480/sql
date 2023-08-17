@@ -123,6 +123,77 @@ BEGIN
     return profesoresHoras;
 END$$
 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   -- FUNCIÓN 3:  FUNCION QUE DEVUELVE EL IVA DEL IMPORTE FACTURADO
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# Funcion para calcular el impuesto discriminado de cualquier monto, actualmente estipulado en 21% para todos los productos
+DELIMITER $$
+
+CREATE FUNCTION calcular_iva(importe DECIMAL(11,2) )
+RETURNS DECIMAL(11,2)
+NO SQL
+BEGIN
+	DECLARE impuestoActual DECIMAL(9,2) DEFAULT 21.00;
+    DECLARE resultado DECIMAL(9,2);  
+    
+    -- ****************************si se modificar el impuesto utilizar esta linea***********************************
+	 -- set ImpuestoActual = -- porcentaje que quiero incrementar
+     
+     set resultado = importe *(impuestoActual/100);
+     return resultado;
+END $$
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   -- FUNCIÓN 4:  FUNCION QUE DEVUELVE EL SALDO TOTAL 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# Funcion que calculo el total del saldo
+
+CREATE FUNCTION calcular_importe(importe DECIMAL(11,2), id_tipoPago int)
+RETURNS DECIMAL(11,2)
+NO SQL
+BEGIN
+   DECLARE resultado DECIMAL(9,2) default 0.0;   
+   
+   # si tipo de pago es 1 Efectivo le aplico un descuento
+   
+	IF (id_tipoPago = 1) THEN    
+		SET resultado = (importe + calcular_iva(importe)) - calcular_descuento(importe);
+	ELSE
+    	SET resultado = importe + calcular_iva(importe);
+	END IF;
+    RETURN resultado;
+END $$
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   -- FUNCIÓN 5:  FUNCION QUE DEVUELVE EL DESCUENTO A APLICAR SI PAGA EN EFECTIVO 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+CREATE FUNCTION calcular_descuento(importe DECIMAL(11,2) )
+RETURNS DECIMAL(11,2)
+NO SQL
+BEGIN
+	DECLARE impuestoActual DECIMAL(9,2) DEFAULT 21.00;
+    DECLARE resultado DECIMAL(9,2);  
+	DECLARE descuento DECIMAL(11,2) DEFAULT 15.00;   
+    
+    -- ****************************si se modificar el impuesto utilizar esta linea***********************************
+	 -- set ImpuestoActual = -- porcentaje que quiero incrementar
+     
+         -- ****************************si se modificar el descuento utilizar esta linea***********************************
+	 -- set descuento = -- porcentaje que quiero descontar
+     
+     set resultado = importe *(descuento/100);
+     return resultado;
+END $$
+
 delimiter ;
 
 -- **************************************************************************************************************************************************************************
@@ -199,27 +270,105 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ventaSubcripcion`(	in p_idUser int,
-										in p_id_tipoCalse int,
+										in p_id_tipoClase int,
                                         in p_id_tipoPlan int								
                                         )
 BEGIN
 
-	IF p_idUser <= 0 OR p_id_tipoCalse <= 0 OR p_id_tipoPlan <= 0  THEN
+DECLARE v_item INT DEFAULT NULL;
+
+	IF p_idUser <= 0 OR p_id_tipoClase <= 0 OR p_id_tipoPlan <= 0  THEN
 		SIGNAL SQLSTATE '45000'
 		SET MESSAGE_TEXT = 'Todos los campos son requeridos';
 	ELSE
-		insert into  subcripcion_temporal(id_cliente,id_usuario,id_Plan)
-		VALUES(p_idCliente,p_idUser,p_id_tipoPlan);        
-	END IF;
+    
+		-- VALIDO SI YA CARGUE EL TIPO DE CLASE, SI ES ASI ACTUALIZAO SOLO EL TIPO DE PLAN
+		SET v_item = (SELECT COUNT(*) FROM subcripcion_temporal WHERE p_idUser = id_usuario AND id_tipoClase = p_id_tipoClase );
+        
+        IF	v_item > 0 THEN
+			UPDATE subcripcion_temporal SET id_plan = p_id_tipoPlan WHERE p_idUser = id_usuario AND id_tipoClase = p_id_tipoClase;
+		ELSE
+			insert into  subcripcion_temporal(id_usuario,id_tipoClase,id_Plan)
+			VALUES(p_idUser,p_id_tipoClase,p_id_tipoPlan);        
+		END IF;
+    END IF;
     
 END$$
 DELIMITER ;
 
+DELIMITER $$
+CREATE DEFINER=`root`@`%` PROCEDURE `sp_generarFacturacion`(in p_id_cliente int,in p_id_usuario int, in p_tipo_pago int )
+BEGIN
+	DECLARE v_idFactura INT DEFAULT 0;
+    DECLARE subtotal, iva,total DECIMAL(11,2);
+	DECLARE rb BOOL DEFAULT FALSE;
+    DECLARE msg TEXT DEFAULT 'Error desconocido';
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET rb := TRUE;
+    
+    IF p_id_usuario <= 0 OR p_id_cliente <= 0 THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'Todos los campos son requeridos';
+	ELSE
+		START TRANSACTION;
+			INSERT INTO factura
+            VALUES(null,p_id_cliente,NULL,NULL,NULL,NULL,p_id_usuario,NULL);
+            set @v_idFactura =  LAST_INSERT_ID();
+			
+			IF @v_idFactura = 0 THEN
+				SET rb := TRUE;
+				SET msg := 'No se genero una nueva factura';
+			END IF;
+            
+            INSERT INTO itemfacturables(id_usuario,id_factura,id_tipoClase,id_tipoPlan)
+            SELECT
+				id_usuario,
+                v_idFactura,
+                id_tipoClase,
+                id_Plan
+			FROM subcripcion_temporal
+			WHERE id_usuario = p_id_usuario;
+            
+            -- borro lo registros tabla temporal por usuario y inicializo el increment
+			DELETE FROM subcripcion_temporal WHERE id_usuario = p_id_usuario;
+            ALTER TABLE subcripcion_temporal AUTO_INCREMENT = 1;
+            
+     /*       
+			# CTE (Common Table Expression) que es una FUNCION VENTANA
+			WITH tabla_temporal_1 AS (
+						select ifs.id_factura, sum(pd.valor) AS importe_total from itemfacturables ifs
+						inner join planes_disponibles pd on pd.id_plan  = ifs.id_tipoPlan
+						where id_factura = 1
+						GROUP BY id_factura
+			)
+			
+			SELECT importe_total
+			INTO @subtotal
+			FROM tabla_temporal_1;  
+            
+            
+                 IF @subtotal = 0 THEN
+					SET rb := TRUE;
+					SET msg := 'El total es de 0 pesos';
+				END IF;
+			
+			UPDATE factura
+			SET subtotal = @subtotal, iva = calcular_iva(@subtotal), total = calcular_importe(@subtotal,tipo_pago), id_tipoPago = p_tipo_pago
+			WHERE id = v_idFactura;
+            
+            IF rb THEN
+				ROLLBACK;
+                SELECT CONCAT('Error: ', msg) AS 'Error';
+			ELSE
+				COMMIT;
+			END IF;
+                        
+		COMMIT;
+    
+    */
+    END IF;
 
-
-
-
-
+END$$
+DELIMITER ;
 
 
 
