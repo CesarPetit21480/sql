@@ -158,14 +158,16 @@ CREATE FUNCTION calcular_importe(importe DECIMAL(11,2), id_tipoPago int)
 RETURNS DECIMAL(11,2)
 NO SQL
 BEGIN
-   DECLARE resultado DECIMAL(9,2) default 0.0;   
-   
+     DECLARE resultado DECIMAL(9,2) default 0.0;   
+   DECLARE importeInicial DECIMAL(9,2) default 0.0; 
    # si tipo de pago es 1 Efectivo le aplico un descuento
    
+	set @importeInicial = importe + calcular_iva(importe);
+   
 	IF (id_tipoPago = 1) THEN    
-		SET resultado = (importe + calcular_iva(importe)) - calcular_descuento(importe);
+		SET resultado =@importeInicial  - calcular_descuento(@importeInicial);
 	ELSE
-    	SET resultado = importe + calcular_iva(importe);
+    	SET resultado = @importeInicial;
 	END IF;
     RETURN resultado;
 END $$
@@ -179,13 +181,9 @@ END $$
 CREATE FUNCTION calcular_descuento(importe DECIMAL(11,2) )
 RETURNS DECIMAL(11,2)
 NO SQL
-BEGIN
-	DECLARE impuestoActual DECIMAL(9,2) DEFAULT 21.00;
+BEGIN	
     DECLARE resultado DECIMAL(9,2);  
 	DECLARE descuento DECIMAL(11,2) DEFAULT 15.00;   
-    
-    -- ****************************si se modificar el impuesto utilizar esta linea***********************************
-	 -- set ImpuestoActual = -- porcentaje que quiero incrementar
      
          -- ****************************si se modificar el descuento utilizar esta linea***********************************
 	 -- set descuento = -- porcentaje que quiero descontar
@@ -322,7 +320,7 @@ BEGIN
             INSERT INTO itemfacturables(id_usuario,id_factura,id_tipoClase,id_tipoPlan)
             SELECT
 				id_usuario,
-                v_idFactura,
+                @v_idFactura,
                 id_tipoClase,
                 id_Plan
 			FROM subcripcion_temporal
@@ -332,12 +330,12 @@ BEGIN
 			DELETE FROM subcripcion_temporal WHERE id_usuario = p_id_usuario;
             ALTER TABLE subcripcion_temporal AUTO_INCREMENT = 1;
             
-     /*       
+       
 			# CTE (Common Table Expression) que es una FUNCION VENTANA
 			WITH tabla_temporal_1 AS (
 						select ifs.id_factura, sum(pd.valor) AS importe_total from itemfacturables ifs
 						inner join planes_disponibles pd on pd.id_plan  = ifs.id_tipoPlan
-						where id_factura = 1
+						where id_factura = @v_idFactura
 						GROUP BY id_factura
 			)
 			
@@ -346,15 +344,17 @@ BEGIN
 			FROM tabla_temporal_1;  
             
             
-                 IF @subtotal = 0 THEN
+			IF @subtotal = 0 THEN
 					SET rb := TRUE;
 					SET msg := 'El total es de 0 pesos';
 				END IF;
 			
 			UPDATE factura
-			SET subtotal = @subtotal, iva = calcular_iva(@subtotal), total = calcular_importe(@subtotal,tipo_pago), id_tipoPago = p_tipo_pago
-			WHERE id = v_idFactura;
+			SET subtotal = @subtotal, iva = calcular_iva(@subtotal),  total_factura = calcular_importe(@subtotal,p_tipo_pago), id_tipoPago = p_tipo_pago ,fecha_facturacion = now()
+			WHERE id_factura = @v_idFactura;
             
+            
+            commit;
             IF rb THEN
 				ROLLBACK;
                 SELECT CONCAT('Error: ', msg) AS 'Error';
@@ -364,11 +364,12 @@ BEGIN
                         
 		COMMIT;
     
-    */
+    
     END IF;
 
 END$$
 DELIMITER ;
+
 
 
 
