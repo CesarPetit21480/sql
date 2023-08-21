@@ -3,24 +3,19 @@
 -- **************************************************************************************************************************************************************************
 -- ******************************************************************************* VISTAS ***********************************************************************************
 -- **************************************************************************************************************************************************************************
-
-
 -- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
    -- VISTA 1:   ESTA VISTA PERMITE SABER QUE CANTIDAD DE CLASE TIENE EL PROFESOR CON ID = 1)
 -- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-use workshop_CesarPetit;
+USE workshop_CesarPetit;
 CREATE VIEW vistaCantTipoClase AS (
 
-  /* ESTA VISTA PERMITE SABER QUE CANTIDAD DE CLASE TIENE EL PROFESOR CON ID = 1)*/
-select CONCAT(p.nombre,' ',p.apellido) 'nombre Profesor', tc.nombre, count(*) 'Cantidad Clase' from clase c
-
-inner join profesor p on p.id_profesor = c.id_profesor
-
-inner join tipo_clase tc on tc.id_tipoClase = c.id_tipoClase
-
-where p.id_profesor = 1
-GROUP BY(tc.id_tipoClase)
+  /* ESTA VISTA PERMITE SABER QUE CANTIDAD DE CLASE TIENE EL PROFESOR CON ID = 1)*/  
+	SELECT CONCAT(p.nombre,' ',p.apellido) 'nombre Profesor', tc.nombre, count(*) 'Cantidad Clase' FROM clase c
+	INNER JOIN profesor p ON p.id_profesor = c.id_profesor
+	INNER JOIN tipo_clase tc ON tc.id_tipoClase = c.id_tipoClase
+	WHERE p.id_profesor = 1
+	GROUP BY(tc.id_tipoClase)
 );
 
 -- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -30,60 +25,101 @@ GROUP BY(tc.id_tipoClase)
 
 CREATE VIEW v_clases_info AS(
 
-SELECT c.id_clase, h.hora, c.fecha_clase, s.nombre as nombre_sucursal, p.nombre as nombre_profesor, tc.nombre as tipo_clase
-
-FROM clase c
-
-INNER JOIN horario h ON c.id_horario = h.id_horario
-
-INNER JOIN sucursal s ON c.id_sucursal = s.id_sucursal
-
-INNER JOIN profesor p ON c.id_profesor = p.id_profesor
-
-INNER JOIN tipo_clase tc ON c.id_tipoClase = tc.id_tipoClase);
-
+	SELECT c.id_clase, h.hora, c.fecha_clase, s.nombre as nombre_sucursal, p.nombre as nombre_profesor, tc.nombre as tipo_clase
+	FROM clase c
+    INNER JOIN horario h ON c.id_horario = h.id_horario
+	INNER JOIN sucursal s ON c.id_sucursal = s.id_sucursal
+	INNER JOIN profesor p ON c.id_profesor = p.id_profesor
+	INNER JOIN tipo_clase tc ON c.id_tipoClase = tc.id_tipoClase
+);
 
 -- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
    -- VISTA 3:  ESTA VISTA MUESTRA LAS CLASES QUE HICIERON LOS CLIENTES
 -- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
 CREATE VIEW v_clases_por_cliente AS(
 
-SELECT c.id_cliente, CONCAT(c.nombre, ' ', c.apellido) as nombre_completo, COUNT(cl.id_clase) as total_clases
-
-FROM cliente c
-
-LEFT JOIN clase cl ON c.id_cliente = cl.id_cliente
-
-GROUP BY c.id_cliente, nombre_completo);
-
+	SELECT c.id_cliente, CONCAT(c.nombre, ' ', c.apellido) as nombre_completo, COUNT(cl.id_clase) as total_clases
+	FROM cliente c
+	LEFT JOIN clase cl ON c.id_cliente = cl.id_cliente
+	GROUP BY c.id_cliente, nombre_completo
+);
 
 -- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
    -- VISTA 4: ESTA VISTA MUESTRA LOS CUPOS LIBRES POR CLASE
 -- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
 CREATE VIEW v_cupos_horario_sucursal AS(
 
-SELECT h.id_horario, h.hora, s.nombre as nombre_sucursal,
-
-    h.cupos as total_cupos,
-
-    h.cupos - COUNT(cl.id_clase) as cupos_disponibles
-
+	SELECT h.id_horario, h.hora, s.nombre as nombre_sucursal,
+	h.cupos as total_cupos,
+	h.cupos - COUNT(cl.id_clase) as cupos_disponibles
 	FROM horario h
-
 	INNER JOIN sucursal s ON h.id_sucursal = s.id_sucursal
-
 	LEFT JOIN clase cl ON h.id_horario = cl.id_horario
-
 	GROUP BY h.id_horario, h.hora, s.nombre, h.cupos
 );
 
+-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   -- VISTA 5: NOS PERMITE VER LA VISTA TOTAL GENERAL ORDENADA POR NRO FACTURACION
+-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+CREATE VIEW `facturacion_total` AS (
+    SELECT 
+        `fc`.`id_factura` AS `id_factura`,
+        `fc`.`subtotal` AS `subtotal`,
+        `fc`.`fecha_facturacion` AS `fecha_facturacion`,
+        `fc`.`total_factura` AS `total_factura`,
+        COUNT(`ifs`.`id_tipoClase`) AS `Cantidad_Items`,
+        CONCAT(`c`.`nombre`, ' ', `c`.`apellido`) AS `Cliente`
+    FROM
+        ((((`factura` `fc`
+        JOIN `itemfacturables` `ifs` ON ((`ifs`.`id_factura` = `fc`.`id_factura`)))
+        JOIN `tipo_clase` `tc` ON ((`tc`.`id_tipoClase` = `ifs`.`id_tipoClase`)))
+        JOIN `cliente` `c` ON ((`c`.`id_cliente` = `fc`.`id_cliente`)))
+        JOIN `planes_disponibles` `pd` ON ((`pd`.`id_plan` = `ifs`.`id_tipoPlan`)))
+    GROUP BY `fc`.`id_factura`
+);
+
+-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   -- VISTA 6: NOS PERMITE VER LA VISTA TOTAL GENERAL ORDENADA POR NRO FACTURACION INDICANDO LAS CLASES SELECCIONADOS
+-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE  VIEW `facturacion_total_con_items` AS (
+    SELECT 
+        `fc`.`id_factura` AS `id_factura`,
+        `fc`.`subtotal` AS `subtotal`,
+        `fc`.`fecha_facturacion` AS `fecha_facturacion`,
+        CONCAT(`c`.`nombre`, ' ', `c`.`apellido`) AS `CLIENTE`,
+        `tc`.`nombre` AS `NOMBRE_CLASE`,
+        `pd`.`nombre` AS `NOMBRE_PLAN`,
+        `fc`.`total_factura` AS `total_factura`
+    FROM
+        ((((`factura` `fc`
+        JOIN `itemfacturables` `ifs` ON ((`ifs`.`id_factura` = `fc`.`id_factura`)))
+        JOIN `tipo_clase` `tc` ON ((`tc`.`id_tipoClase` = `ifs`.`id_tipoClase`)))
+        JOIN `cliente` `c` ON ((`c`.`id_cliente` = `fc`.`id_cliente`)))
+        JOIN `planes_disponibles` `pd` ON ((`pd`.`id_plan` = `ifs`.`id_tipoPlan`)))
+    ORDER BY `fc`.`id_factura`
+
+);
+
+-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   -- VISTA 7: NOS PERMITE SABER LA CANTIDAD DE TIPOS DE CLASES QUE EXISTEN EN LAS CLASES
+-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+CREATE  VIEW `conttipoclases` AS (
+    SELECT 
+        COUNT(`c`.`id_tipoClase`) AS `Cantidad Clases`,
+        `tc`.`nombre` AS `nombre`
+    FROM
+        (`clase` `c`
+        JOIN `tipo_clase` `tc` ON ((`tc`.`id_tipoClase` = `c`.`id_tipoClase`)))
+    GROUP BY `c`.`id_tipoClase`
+
+)
 -- **************************************************************************************************************************************************************************
 -- ***************************************************************************** FUNCIONES **********************************************************************************
 -- **************************************************************************************************************************************************************************
@@ -95,34 +131,31 @@ delimiter $$
 CREATE FUNCTION mayor_numero(num1 int,num2 int) RETURNS varchar(50)
 NO SQL
 BEGIN
-	declare mayor varchar(50);
-	if (num1 > num2)     then
-		set mayor = concat('el mayor numero es:',' ',CONVERT(num1, CHAR(20)));
-	end if;    
-    if (num2 > num1) then
-				set mayor = concat('el mayor numero es:',' ',CONVERT(num2, CHAR(20)));
-	end if;	
-    if (num1 = num2) then   
+	DECLARE mayor VARCHAR(50);
+	IF (num1 > num2) THEN
+		SET mayor = concat('el mayor numero es:',' ',CONVERT(num1, CHAR(20)));
+	END IF;   
+    IF (num2 > num1) THEN
+				SET mayor = concat('el mayor numero es:',' ',CONVERT(num2, CHAR(20)));
+	END IF; 
+    IF (num1 = num2) THEN   
 		set mayor = concat("Los numeros son iguales!!!!");     
-    end if;
-   return mayor;
+   END IF;
+   RETURN mayor;
 END$$
 
-delimiter ;
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-   -- FUNCIÓN 2:  FUNCION QUE DEVUELVE LA CANTIDAD DE PROFESORES QUE HACEN  MAS HORAS  QUE LAS INGRESADAS POR PARAMETRO FORMATO DE INGRESO 00:00--
+ -- FUNCIÓN 2:  FUNCION QUE DEVUELVE LA CANTIDAD DE PROFESORES QUE HACEN  MAS HORAS  QUE LAS INGRESADAS POR PARAMETRO FORMATO DE INGRESO 00:00--
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-delimiter $$
 
 CREATE FUNCTION profesoresCantidadHoras ( p_horas time)  returns int
 READS SQL DATA
 BEGIN
-
-	declare profesoresHoras int ;    
-    set profesoresHoras = (select count(*) cantidadProfesores from profesor where horas_diarias >=p_horas);
-    return profesoresHoras;
+	DECLARE profesoresHoras INT ;    
+    SET profesoresHoras = (SELECT count(*) cantidadProfesores FROM profesor WHERE horas_diarias >=p_horas);
+    RETURN profesoresHoras;
 END$$
-
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
    -- FUNCIÓN 3:  FUNCION QUE DEVUELVE EL IVA DEL IMPORTE FACTURADO
@@ -130,20 +163,17 @@ END$$
 
 
 # Funcion para calcular el impuesto discriminado de cualquier monto, actualmente estipulado en 21% para todos los productos
-DELIMITER $$
 
 CREATE FUNCTION calcular_iva(importe DECIMAL(11,2) )
 RETURNS DECIMAL(11,2)
 NO SQL
 BEGIN
 	DECLARE impuestoActual DECIMAL(9,2) DEFAULT 21.00;
-    DECLARE resultado DECIMAL(9,2);  
-    
+    DECLARE resultado DECIMAL(9,2);    
     -- ****************************si se modificar el impuesto utilizar esta linea***********************************
-	 -- set ImpuestoActual = -- porcentaje que quiero incrementar
-     
-     set resultado = importe *(impuestoActual/100);
-     return resultado;
+	 -- set ImpuestoActual = -- porcentaje que quiero incrementar     
+     SET resultado = importe *(impuestoActual/100);
+     RETURN resultado;
 END $$
 
 
@@ -159,10 +189,10 @@ RETURNS DECIMAL(11,2)
 NO SQL
 BEGIN
      DECLARE resultado DECIMAL(9,2) default 0.0;   
-   DECLARE importeInicial DECIMAL(9,2) default 0.0; 
+	 DECLARE importeInicial DECIMAL(9,2) default 0.0; 
    # si tipo de pago es 1 Efectivo le aplico un descuento
    
-	set @importeInicial = importe + calcular_iva(importe);
+	SET @importeInicial = importe + calcular_iva(importe);
    
 	IF (id_tipoPago = 1) THEN    
 		SET resultado =@importeInicial  - calcular_descuento(@importeInicial);
@@ -172,11 +202,9 @@ BEGIN
     RETURN resultado;
 END $$
 
-
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
    -- FUNCIÓN 5:  FUNCION QUE DEVUELVE EL DESCUENTO A APLICAR SI PAGA EN EFECTIVO 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 CREATE FUNCTION calcular_descuento(importe DECIMAL(11,2) )
 RETURNS DECIMAL(11,2)
@@ -186,13 +214,57 @@ BEGIN
 	DECLARE descuento DECIMAL(11,2) DEFAULT 15.00;   
      
          -- ****************************si se modificar el descuento utilizar esta linea***********************************
-	 -- set descuento = -- porcentaje que quiero descontar
-     
-     set resultado = importe *(descuento/100);
-     return resultado;
+	 -- set descuento = -- porcentaje que quiero descontar     
+     SET resultado = importe *(descuento/100);
+     RETURN resultado;
 END $$
 
-delimiter ;
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   -- FUNCIÓN 6:  FUNCION QUE DEVUELVE CONCATENADO Y SEPARADOS POR - LAS CLASES FACTURADAS
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `tipoClaseConcatenados`( p_idFactura int) RETURNS varchar(100)
+    NO SQL
+BEGIN
+
+	DECLARE tipoClasesConcat VARCHAR(100);
+
+	SET tipoClasesConcat =  (	SELECT GROUP_CONCAT(upper(tc.nombre) SEPARATOR ' - ') 
+								FROM
+									((((`workshop_cesarpetit`.`factura` `fc`
+									JOIN `workshop_cesarpetit`.`itemfacturables` `ifs` ON ((`ifs`.`id_factura` = `fc`.`id_factura`)))
+									JOIN `workshop_cesarpetit`.`tipo_clase` `tc` ON ((`tc`.`id_tipoClase` = `ifs`.`id_tipoClase`)))
+									JOIN `workshop_cesarpetit`.`cliente` `c` ON ((`c`.`id_cliente` = `fc`.`id_cliente`)))
+									JOIN `workshop_cesarpetit`.`planes_disponibles` `pd` ON ((`pd`.`id_plan` = `ifs`.`id_tipoPlan`)))
+									WHERE fc.id_factura = p_idFactura);
+	RETURN tipoClasesConcat;
+
+END$$
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   -- FUNCIÓN 7:  FUNCION QUE DEVUELVE CONCATENADO Y SEPARADOS POR - LAS PLANES FACTURADOS
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE FUNCTION `tipoPlanesConcatenados`(p_idFactura int) RETURNS varchar(100) CHARSET utf8mb4
+    NO SQL
+BEGIN
+
+DECLARE tipoPlanConcat VARCHAR(100);
+
+SET tipoPlanConcat =  (SELECT GROUP_CONCAT(upper(pd.nombre) SEPARATOR ' - ') 
+						FROM
+							((((`workshop_cesarpetit`.`factura` `fc`
+							JOIN `workshop_cesarpetit`.`itemfacturables` `ifs` ON ((`ifs`.`id_factura` = `fc`.`id_factura`)))
+							JOIN `workshop_cesarpetit`.`tipo_clase` `tc` ON ((`tc`.`id_tipoClase` = `ifs`.`id_tipoClase`)))
+							JOIN `workshop_cesarpetit`.`cliente` `c` ON ((`c`.`id_cliente` = `fc`.`id_cliente`)))
+							JOIN `workshop_cesarpetit`.`planes_disponibles` `pd` ON ((`pd`.`id_plan` = `ifs`.`id_tipoPlan`)))
+							WHERE fc.id_factura = p_idFactura);
+                            
+RETURN tipoPlanConcat;                     
+
+END$$
+
 
 -- **************************************************************************************************************************************************************************
 -- ***************************************************************************** STORED PROCEDURE ***************************************************************************
@@ -203,77 +275,83 @@ delimiter ;
   field : se debera agregar por que tipo de columna se desea ordenar 
   orden : ASC - DESC*/
 -- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-delimiter $$
-CREATE PROCEDURE sp_ordenar_clase (in field varchar(20), in orden VARCHAR(20) )
-BEGIN
 
-	if field <> '' then    
-		set @order_clase =  concat('ORDER BY',' ',field ,' ', orden);    
-    else
+CREATE PROCEDURE sp_ordenar_clase (IN field VARCHAR(20), IN orden VARCHAR(20) )
+BEGIN
+	IF field <> '' THEN
+		SET @order_clase =  concat('ORDER BY',' ',field ,' ', orden);    
+    ELSE
     	set @order_clase = '';    
-    end if; 
+    END IF; 
     SET @clausula = concat('select * from clase ', @order_clase);
 	PREPARE runSQL FROM @clausula;
 	EXECUTE runSQL;
-	DEALLOCATE PREPARE runSQL;
- 
+	DEALLOCATE PREPARE runSQL; 
 END$$
 
 -- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   -- SP 2: SE CREA STORE PRODEDURE QUE INGRESA UN NUEVO PROFESOR
 -- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-CREATE PROCEDURE sp_agregar_profesor(in p_nombre varchar(50), p_apellido varchar(50), in p_email varchar(100), in p_horasDiarias time)
+CREATE PROCEDURE sp_agregar_profesor(IN p_nombre VARCHAR(50), IN p_apellido VARCHAR(50), IN p_email VARCHAR(100), IN p_horasDiarias TIME)
 BEGIN
 	INSERT INTO profesor(nombre,apellido,email,horas_diarias)
-    values(p_nombre,p_apellido,p_email,p_horasDiarias);
+    VALUES(p_nombre,p_apellido,p_email,p_horasDiarias);
 END$$
 
-delimiter ;
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+  -- SP 3: SE CREA STORE PRODEDURE  QUE QUITA PROFESOR
+-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_quitarProfesor`(in p_id int)
+CREATE  PROCEDURE `sp_quitarProfesor`(IN p_id INT)
 BEGIN
-delete from profesor where id_profesor = p_id;
+	DELETE FROM profesor WHERE id_profesor = p_id;
 END$$
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+  -- SP 4: SE CREA STORE PRODEDURE  QUE APLICA TRANSACCIONES SI EXISTE O NO PROFESOR
+-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_transaccion`()
 BEGIN
-	declare registros int default 0;
- START TRANSACTION;
-		set @registros = (select count(*) FROM profesor);	
+	DECLARE registros INT DEFAULT 0;
+	START TRANSACTION;
+		SET @registros = (SELECT count(*) FROM profesor);	
     
 		IF (@registros > 0) THEN
-			 call sp_quitarProfesor(1);			
+			 CALL sp_quitarProfesor(1);			
 		ELSE
-			call sp_cargarProfesor('Carlos','Sand','carlos@gmail.com','9:00');  
+			CALL sp_cargarProfesor('Carlos','Sand','carlos@gmail.com','9:00');  
 		END IF ;
 COMMIT;
 -- ROLLBACK;
 
 END$$
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+  -- SP 5: SE CREA STORE PRODEDURE QUE AGREGA PROFESOR TRANSACCION
+-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_cargarProfesor`(	in p_nombre varchar(50),
-										in p_apellido varchar(50),
-                                        in p_email varchar(70),
-                                        in p_horas time)
+CREATE  PROCEDURE `sp_cargarProfesor`(	IN p_nombre VARCHAR(50),
+										IN p_apellido VARCHAR(50),
+                                        IN p_email VARCHAR(70),
+                                        IN p_horas TIME)
 BEGIN
-
-INSERT INTO profesor()
-values (null,p_nombre,p_apellido,p_email,p_horas);
-
+	INSERT INTO profesor()
+	VALUES (null,p_nombre,p_apellido,p_email,p_horas);
 END$$
-DELIMITER ;
 
-DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ventaSubcripcion`(	in p_idUser int,
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+  -- SP 6: SE CREA STORE PRODEDURE QUE GENERA ITEMS PARA FACTURAR
+-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE PROCEDURE `sp_ventaSubcripcion`(	in p_idUser int,
 										in p_id_tipoClase int,
                                         in p_id_tipoPlan int								
                                         )
 BEGIN
 
-DECLARE v_item INT DEFAULT NULL;
+	DECLARE v_item INT DEFAULT NULL;
 
 	IF p_idUser <= 0 OR p_id_tipoClase <= 0 OR p_id_tipoPlan <= 0  THEN
 		SIGNAL SQLSTATE '45000'
@@ -292,10 +370,13 @@ DECLARE v_item INT DEFAULT NULL;
     END IF;
     
 END$$
-DELIMITER ;
 
-DELIMITER $$
-CREATE DEFINER=`root`@`%` PROCEDURE `sp_generarFacturacion`(in p_id_cliente int,in p_id_usuario int, in p_tipo_pago int )
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+  -- SP 7: SE CREA STORE PRODEDURE QUE GENERA LA FACTURA AL CLIENTE
+-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE PROCEDURE `sp_generarFacturacion`(IN p_id_cliente INT,IN p_id_usuario INT, IN p_tipo_pago INT )
 BEGIN
 	DECLARE v_idFactura INT DEFAULT 0;
     DECLARE subtotal, iva,total DECIMAL(11,2);
@@ -310,7 +391,7 @@ BEGIN
 		START TRANSACTION;
 			INSERT INTO factura
             VALUES(null,p_id_cliente,NULL,NULL,NULL,NULL,p_id_usuario,NULL);
-            set @v_idFactura =  LAST_INSERT_ID();
+            SET @v_idFactura =  LAST_INSERT_ID();
 			
 			IF @v_idFactura = 0 THEN
 				SET rb := TRUE;
@@ -333,9 +414,9 @@ BEGIN
        
 			# CTE (Common Table Expression) que es una FUNCION VENTANA
 			WITH tabla_temporal_1 AS (
-						select ifs.id_factura, sum(pd.valor) AS importe_total from itemfacturables ifs
-						inner join planes_disponibles pd on pd.id_plan  = ifs.id_tipoPlan
-						where id_factura = @v_idFactura
+						SELECT ifs.id_factura, sum(pd.valor) AS importe_total FROM itemfacturables ifs
+						INNER JOIN planes_disponibles pd on pd.id_plan  = ifs.id_tipoPlan
+						WHERE id_factura = @v_idFactura
 						GROUP BY id_factura
 			)
 			
@@ -353,24 +434,45 @@ BEGIN
 			SET subtotal = @subtotal, iva = calcular_iva(@subtotal),  total_factura = calcular_importe(@subtotal,p_tipo_pago), id_tipoPago = p_tipo_pago ,fecha_facturacion = now()
 			WHERE id_factura = @v_idFactura;
             
-            
-            commit;
             IF rb THEN
 				ROLLBACK;
                 SELECT CONCAT('Error: ', msg) AS 'Error';
 			ELSE
 				COMMIT;
-			END IF;
-                        
-		COMMIT;
-    
-    
+			END IF;       
     END IF;
 
 END$$
-DELIMITER ;
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+-- SP 8: SE CREA STORE PRODEDURE MUESTRA DATOS DE LA FACTURA POR ID
+-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getFactura`(IN p_idFactura INT)
+BEGIN
+
+	DECLARE clases_factura varchar(50) DEFAULT NULL;
+	DECLARE planes_factura varchar(50) DEFAULT NULL;
+
+	SET @clases_factura = tipoClaseConcatenados(p_idFactura);
+	SET @planes_factura = tipoPlanesConcatenados(p_idFactura);
+
+	SELECT 	fc.id_factura, 
+			CONCAT(c.nombre,' ',c.apellido) nombre_cliente,
+            fc.subtotal,fc.fecha_facturacion,
+            fc.total_factura,
+            count(ifs.id_tipoClase) AS cantidad_items, 
+            @clases_factura AS clases_facturadas ,
+            @planes_factura AS planes_seleccionados 
+            FROM workshop_cesarpetit.factura fc
+	INNER JOIN itemfacturables ifs ON ifs.id_factura = fc.id_factura
+	INNER JOIN tipo_clase tc ON tc.id_tipoClase = ifs.id_tipoClase
+	INNER JOIN cliente c ON c.id_cliente = fc.id_cliente
+	INNER JOIN planes_disponibles pd ON pd.id_plan = ifs.id_tipoPlan
+	WHERE fc.id_factura = p_idFactura
+	GROUP BY (fc.id_factura);
+END$$
 
 
 -- **************************************************************************************************************************************************************************
@@ -380,7 +482,7 @@ DELIMITER ;
 -- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TRIGGER 1 - Se creo trigger que cuando se da de baja el usuario de manera logica lo guarda en el log
   
-delimiter $$
+
 use workshop_CesarPetit $$
 CREATE TRIGGER tr_bajaUser 
 AFTER UPDATE

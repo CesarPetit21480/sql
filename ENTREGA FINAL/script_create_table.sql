@@ -182,8 +182,8 @@ CREATE TABLE `factura` (
 -- TABLA 16 ITEM FACTURABLES 
 CREATE TABLE `itemfacturables` (
   `id_item` int NOT NULL AUTO_INCREMENT,
-  `id_Usuario` int DEFAULT NULL,
-  `id_Factura` int DEFAULT NULL,
+  `id_usuario` int DEFAULT NULL,
+  `id_factura` int DEFAULT NULL,
   `id_tipoClase` int DEFAULT NULL,
   `id_tipoPlan` int DEFAULT NULL,
   PRIMARY KEY (`id_item`),
